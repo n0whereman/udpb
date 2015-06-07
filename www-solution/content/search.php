@@ -30,7 +30,7 @@ if ( false===$rc ) {
     echo '<h1> Výsledky vyhľadavania:'.$result.'</h1>';
     $stmt->bind_result($id, $title);
     while($stmt->fetch()){
-        echo 'Article: <a href=/index.php?id='.htmlspecialchars($id).'>'.htmlspecialchars($title).'</a><br />';
+        echo 'Article: <a href="./index.php?id='.htmlspecialchars($id).'">'.htmlspecialchars($title).'</a><br />';
     }
     ?>
 </div>

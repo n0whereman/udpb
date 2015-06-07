@@ -72,7 +72,7 @@ function isLogin() {
                                     <li><a href="./?page=kontakt.php">Kontakt</a></li>
                                     <?php
                                     if(isLogin()){
-										// A10 - sessionID sa prenasa v cookine, takze tu je zbytocne
+										// A10 - sessionID sa prenasa v cookine, takze tu je zbytocne, skus to zmazat :)
                                         echo '<li><a href="./?page=logout.php&session_id='.session_id().'&go_page=index.php">Odhlásiť sa</a></li>';
                                     }else{
                                         echo '<li><a href="./?page=login.php">Login</a></li>';

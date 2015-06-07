@@ -97,6 +97,5 @@ function isLogin() {
                 //nieco
                 ?>-->
 			</div>
-<!-- http://192.168.56.102/preview.php?file=index.php -->
 	</body>
 </html>

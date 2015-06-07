@@ -43,10 +43,9 @@ function isLogin() {
 					<div id="content">
 						<div class="inner">
                             <?php
-
+							//A4 - LFI najjednoduschsie riesenie spociva v dopisani .php za kazdy requirnuty file
                             @$pages=$_GET["page"];
                             if(!isLogin()) { $pages='login.php'; }
-//                            var_dump($_SESSION);
                             if (!isset($pages) || empty($pages)){
                                 require("content/home.php");
                             }elseif (file_exists("content/$pages")) {
@@ -54,7 +53,7 @@ function isLogin() {
                             }else{require ("content/error_page.php");}
 
                             /*
-                             * Ak to osetris tak musis vsetky linky prepisat z hocico.php na hocico ... vymazat .php
+                             * A4 - Nuz ked ak to osetris vyssie spomenutym sposobom tak musis vsetky linky prepisat z whatever.php na whatever nasledne vymazat .php
                              */
                             ?>
 						</div>
@@ -73,7 +72,7 @@ function isLogin() {
                                     <li><a href="./?page=kontakt.php">Kontakt</a></li>
                                     <?php
                                     if(isLogin()){
-					//nepouzivaju sa nahodou Cookies? :)
+										// A10 - sessionID sa prenasa v cookine, takze tu je zbytocne
                                         echo '<li><a href="./?page=logout.php&session_id='.session_id().'&go_page=index.php">Odhlásiť sa</a></li>';
                                     }else{
                                         echo '<li><a href="./?page=login.php">Login</a></li>';
@@ -93,9 +92,6 @@ function isLogin() {
 							<ul id="copyright">
 							</ul>
 					</div>
-                //<?php
-                //nieco
-                ?>-->
 			</div>
 	</body>
 </html>

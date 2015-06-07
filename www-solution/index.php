@@ -43,21 +43,15 @@ function isLogin() {
 					<div id="content">
 						<div class="inner">
                             <?php
-
+							//A4 - dopiseme .php co (naoko) zabrani lfi v page
                             @$pages=$_GET["page"];
                             if(!isLogin()) { $pages='login'; }
-//                            var_dump($_SESSION);
                             if (!isset($pages) || empty($pages)){
                                 require("content/home.php");
                             }elseif (file_exists("content/$pages.php")) {
-//                            }elseif (file_exists("content/$pages.php")) {
                                 require("content/$pages.php");
-//                                require("content/$pages.php");
                             }else{require ("content/error_page.php");}
-
-                            /*
-                             * Ak to osetris tak musis vsetky linky prepisat z hocico.php na hocico ... vymazat .php
-                             */
+							//A4 - bacha na tie linky
                             ?>
 						</div>
 					</div>
@@ -75,7 +69,6 @@ function isLogin() {
                                     <li><a href="./?page=kontakt">Kontakt</a></li>
                                     <?php
                                     if(isLogin()){
-					//nepouzivaju sa nahodou Cookies? :)
                                         echo '<li><a href="./?page=logout&session_id='.session_id().'&go_page=index.php">Odhlásiť sa</a></li>';
                                     }else{
                                         echo '<li><a href="./?page=login">Login</a></li>';
@@ -95,9 +88,6 @@ function isLogin() {
 							<ul id="copyright">
 							</ul>
 					</div>
-                //<?php
-                //nieco
-                ?>-->
 			</div>
 	</body>
 </html>

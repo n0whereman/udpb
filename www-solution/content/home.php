@@ -39,7 +39,7 @@ if(@$_GET['id']<=0) {
      echo '</article>';
     }
 }else{
-    $articles = $db->query("SELECT * FROM articles WHERE id='".$db->real_escape_string($_GET['id'])."'");
+    $articles = $db->query("SELECT * FROM articles WHERE id='".$db->real_escape_string($_GET['id'])."' AND status=1");
     $article = $articles->fetch_array(MYSQL_ASSOC);
         echo '<article class="box post post-excerpt">
         <header>

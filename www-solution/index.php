@@ -69,7 +69,8 @@ function isLogin() {
                                     <li><a href="./?page=kontakt">Kontakt</a></li>
                                     <?php
                                     if(isLogin()){
-                                        echo '<li><a href="./?page=logout&session_id='.session_id().'&go_page=index.php">Odhlásiť sa</a></li>';
+										//A10 - zmazeme sessiond_id
+                                        echo '<li><a href="./?page=logout&go_page=index.php">Odhlásiť sa</a></li>';
                                     }else{
                                         echo '<li><a href="./?page=login">Login</a></li>';
                                     }

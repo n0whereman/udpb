@@ -1,7 +1,12 @@
 <?php
-function verify_login(){
+$token_id= $csrf->get_token_id();
+$token_value = $csrf->get_token($token_id);
+
+$form_names = $csrf->form_names(array('name', 'pass'), false);
+
+function verify_login($name,$pass){
     global $db;
-    $sql = $db->query("SELECT id,name,password FROM admins WHERE name='".$_GET['name']."' AND password='".hash("sha512",$_GET['pass'])."' LIMIT 1");
+    $sql = $db->query("SELECT id,name,password FROM admins WHERE name='".$name."' AND password='".hash("sha512",$pass)."' LIMIT 1");
     $data = $sql->fetch_array();
 
 
@@ -17,22 +22,37 @@ function verify_login(){
 
 //echo hash("sha512","student");
 
-if(@$_GET['logIN']){
-    if(verify_login()) {
-        header('LOCATION: index.php');
-    }else{
-        $error = "Wrong name or password!! Pls try it again!!";
-    }
+if(@$_POST['logIN']){
+	if(isset($_POST[$form_names['name']], $_POST[$form_names['pass']])) {
+		// Check if token id and token value are valid.
+		if($csrf->check_valid('post')) {
+			// Get the Form Variables.
+			$name = $_POST[$form_names['name']];
+			$pass = $_POST[$form_names['pass']];
+
+			if(verify_login($name,$pass)) {
+				header('LOCATION: index.php');
+			}else{
+				$error = "Wrong name or password!! Pls try it again!!";
+			}
+		}else{
+			echo "SCRF Error";
+		}
+		// Regenerate a new random value for the form.
+		$form_names = $csrf->form_names(array('user', 'password'), true);
+	}
+
 }
 ?>
 <?if(!isLogin()){?>
 <div style="width:20%;">
     <?=@$error?>
-    <form method="get" name="login">
+    <form method="post" name="login">
+		<input type="hidden" name="<?=$token_id?>" value="<?=$token_value?>">
         <label>Meno</label>
-        <input name="name" value="" type="text" placeholder="LamaCoder" autofocus />
+        <input name="<?=$form_names['name']?>" value="" type="text" placeholder="LamaCoder" autofocus />
         <label>Heslo</label>
-        <input name="pass" value="" type="password" placeholder="********" />
+        <input name="<?=$form_names['pass']?>" value="" type="password" placeholder="********" />
         <br />
         <button class="button" name="logIN" value="1">Prihlasiť</button>
     </form>

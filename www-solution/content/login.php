@@ -5,6 +5,7 @@ $token_value = $csrf->get_token($token_id);
 $form_names = $csrf->form_names(array('name', 'pass'), false);
 
 function verify_login($name,$pass){
+
     global $db;
     $sql = $db->query("SELECT id,name,password FROM admins WHERE name='".$db->real_escape_string($name)."' AND password='".hash("sha512",$pass)."' LIMIT 1");
     $data = $sql->fetch_array();

@@ -1,2 +1,0 @@
-# udpb
-Vulnerable blog

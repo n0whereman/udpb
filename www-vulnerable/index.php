@@ -50,9 +50,7 @@ function isLogin() {
                             if (!isset($pages) || empty($pages)){
                                 require("content/home.php");
                             }elseif (file_exists("content/$pages")) {
-//                            }elseif (file_exists("content/$pages.php")) {
                                 require("content/$pages");
-//                                require("content/$pages.php");
                             }else{require ("content/error_page.php");}
 
                             /*

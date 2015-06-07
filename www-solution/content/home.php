@@ -39,9 +39,12 @@ if(@$_GET['id']<=0) {
      echo '</article>';
     }
 }else{
-    $articles = $db->query("SELECT * FROM articles WHERE id='".$db->real_escape_string($_GET['id'])."' AND status=1");
-    $article = $articles->fetch_array(MYSQL_ASSOC);
-        echo '<article class="box post post-excerpt">
+	if($_SESSION['id'] != 1 && $_GET['id'] == 4){
+		echo "Nemate pristup";
+	}else{
+		$articles = $db->query("SELECT * FROM articles WHERE id='".$db->real_escape_string($_GET['id'])."' AND status=1");
+		$article = $articles->fetch_array(MYSQL_ASSOC);
+		echo '<article class="box post post-excerpt">
         <header>
             <h2><a href="#">' . $article['title'] . '</a></h2>
         </header>
@@ -49,10 +52,12 @@ if(@$_GET['id']<=0) {
             <span class="date"><span class="month">' . date("M", strtotime($article['date'])) . '</span> <span class="day">' . date("d", strtotime($article['date'])) . '</span><span class="year">, ' . date("y", strtotime($article['date'])) . '</span></span>
         </div>
         <a href="#" class="image featured"><img src="images/pic01.jpg" alt="" /></a>';
-        $replaced_placeholder = replace_br($article['content']);
-        $new = htmlspecialchars($replaced_placeholder,ENT_QUOTES);
-        $replaced_n = replace_n($new);
-        echo $replaced_n;
-   echo  '</article>';
+		$replaced_placeholder = replace_br($article['content']);
+		$new = htmlspecialchars($replaced_placeholder,ENT_QUOTES);
+		$replaced_n = replace_n($new);
+		echo $replaced_n;
+		echo  '</article>';
+	}
+
 }
 ?>

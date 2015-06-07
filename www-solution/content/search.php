@@ -1,21 +1,36 @@
 <?php
-// A1 - uplne najlepsie http://php.net/manual/en/mysqli-stmt.get-result.php 
-// A1 - pripade treba pozriet na real_escape_string() a whitelistovat vyhladavanie teda povolit len znaky a cisla napriklad regexom ;)
-// A5 minimalne treba povypinat error message no najlepsie je osetrit cyklus try catchom a v pripade chyby presmerovanie na error_page.php
-$search = $db->query('SELECT * FROM articles WHERE title LIKE "%'.$_POST[search].'%" OR content LIKE "%'.$_POST[search].'%"');
-?>
+//A1 - pouzijeme prepared statements
+//uplne najlepsie http://php.net/manual/en/mysqli-stmt.get-result.php
+//pripadne treba pozriet na real_escape_string() a whitelistovat vyhladavanie teda povolit len znaky a cisla napriklad regexom ;)
+$stmt = $db->stmt_init();
+$sql = "SELECT id,title FROM articles WHERE title LIKE ? OR content LIKE ?";
 
-<!--Co tak dat vysledky vyhladavania a data[title] do htmlspecialchars? -->
-<h1> Výsledky vyhľadavania: <?=$_POST['search']?></h1>
+$stmt = $db->prepare($sql);
+if (  false === $stmt  ) {
+    die('prepare() failed: ' . htmlspecialchars($db->error));
+}
+
+$rc = $stmt->bind_param("ss",$srch,$srch);
+if ( false===$rc ) {
+    die('bind_param() failed: ' . htmlspecialchars($stmt->error));
+}
+
+$srch = isset($_POST[search]) ? "%{$_POST[search]}%" : '';
+$rc = $stmt->execute();
+if ( false===$rc ) {
+    die('execute() failed: ' . htmlspecialchars($stmt->error));
+}
+
+?>
 
 <div>
     <?php
-    try {
-      while($data = $search->fetch_array(MYSQL_ASSOC)){
-	  echo 'Article: <a href=/index.php?id='.$data["id"].'>'.$data["title"].'</a><br />';
+    //A3 - pri prepared statments je to uz brane ako string no pre istotu pouzit htmlspecialchars();
+    $result = htmlspecialchars($_POST["search"]);
+    echo '<h1> Výsledky vyhľadavania:'.$result.'</h1>';
+    $stmt->bind_result($id, $title);
+    while($stmt->fetch()){
+        echo 'Article: <a href=/index.php?id='.htmlspecialchars($id).'>'.htmlspecialchars($title).'</a><br />';
     }
-    } catch (Exception $e) {
-      header("LOCATION: error_page.php");
-     } 
     ?>
 </div>

@@ -1,6 +1,7 @@
 <?php
 session_start();
 ob_start();
+define("udpb",true);
 include_once('include/db.php');
 function isLogin() {
     if(@$_SESSION['id'] > 0){

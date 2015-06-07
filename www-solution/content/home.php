@@ -1,5 +1,7 @@
 <?php
-include_once(__DIR__.DIRECTORY_SEPARATOR.'../include/db.php');
+defined('udpb') || die("Error 404");
+// TOto sme odstranili pretoze to je includovane v indexe a tu to nei je potrebebne
+//include_once(__DIR__.DIRECTORY_SEPARATOR.'../include/db.php');
 ?>
 <!-- Post -->
 

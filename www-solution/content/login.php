@@ -5,23 +5,40 @@ $token_value = $csrf->get_token($token_id);
 $form_names = $csrf->form_names(array('name', 'pass'), false);
 
 function verify_login($name,$pass){
-
+    //A1 - taktiez bacha na sqli a radsej pouzit prepared statements ako v search
     global $db;
-    $sql = $db->query("SELECT id,name,password FROM admins WHERE name='".$db->real_escape_string($name)."' AND password='".hash("sha512",$pass)."' LIMIT 1");
-    $data = $sql->fetch_array();
-
-
-    if(!empty($data)){
-        $_SESSION['id']  = $data['id'];
-        $_SESSION['name'] = $data['name'];
-        $_SESSION['session_id'] = session_id();
-        return true;
-    }else{
-        return false;
+    $stmt = $db->stmt_init();
+    //$sql = $db->query("SELECT id,name,password FROM admins WHERE name='".$db->real_escape_string($name)."' AND password='".hash("sha512",$pass)."' LIMIT 1");
+    $sql = "SELECT id,name,password FROM admins WHERE name=? AND password=? LIMIT 1";
+    $stmt = $db->prepare($sql);
+    if (  false === $stmt  ) {
+        die('prepare() failed: ' . htmlspecialchars($db->error));
     }
-}
 
-//echo hash("sha512","student");
+    $rc = $stmt->bind_param('ss',$name,$pass1);
+    $pass1 = hash("sha512",$pass);
+
+    if ( false===$rc ){
+        die('bind_param() failed: ' . htmlspecialchars($stmt->error));
+    }
+
+    $rc = $stmt->execute();
+    if ( false===$rc ) {
+        die('execute() failed: ' . htmlspecialchars($stmt->error));
+    }
+
+    //$data = $sql->fetch_array();
+    $stmt->bind_result($id, $name2, $pass2);
+    while($stmt->fetch()){
+            $_SESSION['id']  = $id;
+            $_SESSION['name'] = $name2;
+            $_SESSION['session_id'] = session_id();
+            return true;
+    }
+    $stmt->free_result();
+    $stmt->close();
+    return false;
+}
 
 if(@$_POST['logIN']){
 	if(isset($_POST[$form_names['name']], $_POST[$form_names['pass']])) {
@@ -36,8 +53,9 @@ if(@$_POST['logIN']){
 			}else{
 				$error = "Wrong name or password!! Pls try it again!!";
 			}
-		}else{
-			echo "SCRF Error";
+		}
+        else{
+			echo "CSRF Error";
 		}
 		// Regenerate a new random value for the form.
 		$form_names = $csrf->form_names(array('user', 'password'), true);
@@ -45,6 +63,7 @@ if(@$_POST['logIN']){
 
 }
 ?>
+
 <?if(!isLogin()){?>
 <div style="width:20%;">
     <?=@$error?>

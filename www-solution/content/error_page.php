@@ -1,4 +1,4 @@
 <?php
-echo 'tha CHYBA!';
+echo 'This is embarassing, isnt it?!';
 ?>
 

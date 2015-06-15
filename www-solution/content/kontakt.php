@@ -36,11 +36,11 @@ else                /* send the submitted data */
 				}else{
 						$from="From: $name<$email>\r\nReturn-path: $email";
 						$subject="Message sent using your contact form";
-						mail("youremail@yoursite.com", $subject, $message, $from);
-						echo "Email sent!";
+						//mail("youremail@yoursite.com", $subject, $message, $from);
+						echo "Email has been sent!";
 				}
 			}else{
-				echo "SCRF Error";
+				echo "CSRF Error";
 			}
 			// Regenerate a new random value for the form.
 			$form_names = $csrf->form_names(array('user', 'password'), true);

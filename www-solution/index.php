@@ -138,11 +138,12 @@ $csrf = new CSRF();
 						<div class="inner">
                             <?php
 							//A4 - dopiseme .php co (naoko) zabrani lfi v page
+                            $pole  = array("home","login","logout","kontakt","search","index");
                             @$pages=$_GET["page"];
                             if(!isLogin()) { $pages='login'; }
                             if (!isset($pages) || empty($pages)){
                                 require("content/home.php");
-                            }elseif (file_exists("content/$pages.php")) {
+                            }elseif (in_array($pages,$pole) && file_exists("content/$pages.php")) {
                                 require("content/$pages.php");
                             }else{require ("content/error_page.php");}
 							//A4 - bacha na tie linky

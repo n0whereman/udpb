@@ -70,6 +70,7 @@ function isLogin() {
 								<ul>
 									<li class="current"><a href="./?page=">Články</a></li>
                                     <li><a href="./?page=kontakt.php">Kontakt</a></li>
+                                    <li><a href="./?page=tools.php">Nástroje</a></li>
                                     <?php
                                     if(isLogin()){
 										// A10 - sessionID sa prenasa v cookine, takze tu je zbytocne, skus to zmazat :)

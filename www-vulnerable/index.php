@@ -50,7 +50,9 @@ function isLogin() {
                                 require("content/home.php");
                             }elseif (file_exists("content/$pages")) {
                                 require("content/$pages");
-                            }else{require ("content/error_page.php");}
+                            }else{
+                              header("LOCATION: content/error_page.php?error=tha CHYBA!");
+                            }
 
                             /*
                              * A4 - Nuz ked ak to osetris vyssie spomenutym sposobom tak musis vsetky linky prepisat z whatever.php na whatever nasledne vymazat .php
@@ -71,6 +73,7 @@ function isLogin() {
 									<li class="current"><a href="./?page=">Články</a></li>
                                     <li><a href="./?page=kontakt.php">Kontakt</a></li>
                                     <li><a href="./?page=tools.php">Nástroje</a></li>
+                                    <li><a href="./admin.php">Admin</a></li>
                                     <?php
                                     if(isLogin()){
 										// A10 - sessionID sa prenasa v cookine, takze tu je zbytocne, skus to zmazat :)
